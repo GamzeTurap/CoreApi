@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.ImplementationsOfManagers;
+using BusinessLayer.InterfacesOfManagers;
+using DataLayer.InterfacesOfRepo;
 using EntityLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,14 +10,16 @@ namespace CoreApi.Controllers
     [Route("h")]
     public class HomeController : Controller
     {
-        private readonly StudentManager _manager;
+        private readonly IStudentManager _manager;
 
-        public HomeController(StudentManager manager)
+        public HomeController(IStudentManager manager)
         {
             _manager = manager;
         }
 
+
         [HttpGet]
+        [Route("allstudents")]
         public IActionResult AllStudents()
         {
 
@@ -29,15 +33,26 @@ namespace CoreApi.Controllers
                 return Problem(ex.Message);
             }
         }
+
+
         [HttpPost]
+        [Route("[action]")]
         public IActionResult AddStudent(StudentVM model)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return Problem("Bilgilerinizi eksiksiz girdiginize emin olun! Tekrar deneyiniz.");
+                    return Problem("Bilgileri eksiksiz girdiginize emin olun! Tekrar deneyiniz!");
                 }
+                int index = model.Name.IndexOf(' ');
+                model.FirstName = model.Name;
+                if (index > -1)
+                {
+                    model.FirstName = model.Name.Substring(0, index);
+                    model.SecondName = model.Name.Substring(index);
+                }
+
                 var result = _manager.Add(model);
                 return Created("", result.Message);
             }
@@ -46,15 +61,17 @@ namespace CoreApi.Controllers
                 return Problem(ex.Message);
             }
         }
+
         [HttpGet]
+        [Route("find")]
         public IActionResult FindStudentsByYear(int? year)
         {
             try
             {
                 if (year == null)
                 {
-                    //Yıl değeri verilmemişse bütün öğrencileri göndersin
-                    return Problem("Yıl değeri vermediniz!");
+                    //Yil degeri verilmemisse butun ogrencileri gondersin
+                    return Problem("Yil degeri vermediniz!");
                 }
 
                 var result = _manager.GetAll(x =>
@@ -65,7 +82,7 @@ namespace CoreApi.Controllers
                 }
                 else
                 {
-                    return Problem("Uygun veri bulunamadı!");
+                    return Problem("Uygun veri bulunamadi!");
                 }
 
             }
@@ -77,3 +94,4 @@ namespace CoreApi.Controllers
 
     }
 }
+

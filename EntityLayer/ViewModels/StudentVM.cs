@@ -15,7 +15,7 @@ namespace EntityLayer.ViewModels
         [Required]
         [StringLength(100,MinimumLength =2)]
         public string Name { get; set; }
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
         public string? SecondName { get; set; }
         [StringLength(50, MinimumLength = 2)]
         public string LastName { get; set; }
