@@ -24,6 +24,6 @@ namespace EntityLayer.Models
         [StringLength(50, MinimumLength = 2)]
 
         public string LastName { get; set; }
-        public DateOnly? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
     }
 }

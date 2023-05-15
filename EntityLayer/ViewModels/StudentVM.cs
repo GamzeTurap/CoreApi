@@ -19,6 +19,6 @@ namespace EntityLayer.ViewModels
         public string? SecondName { get; set; }
         [StringLength(50, MinimumLength = 2)]
         public string LastName { get; set; }
-        public DateOnly? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
     }
 }
