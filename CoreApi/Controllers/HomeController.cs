@@ -2,6 +2,7 @@
 using BusinessLayer.InterfacesOfManagers;
 using DataLayer.InterfacesOfRepo;
 using EntityLayer.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreApi.Controllers
@@ -19,6 +20,8 @@ namespace CoreApi.Controllers
 
 
         [HttpGet]
+        [Route("alls")]
+        [Authorize] // giris yapmadan bu metoda ulasamayiz.
         [Route("allstudents")]
         public IActionResult AllStudents()
         {
